@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<!--
+	Copyright 2015 Zaizi Limited.
+
+	Licensed under the Apache License, Version 2.0 (the 'License');
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	   http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an 'AS IS' BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+	
+-->
+<beans>
+
+	<!-- Crowd Beans -->
+	<!-- <bean id="resourceLocator"
+		class="com.atlassian.crowd.service.client.ClientResourceLocator">
+		<constructor-arg value="crowd.properties" />
+	</bean>
+
+	<bean id="clientProperties" class="com.atlassian.crowd.service.client.ClientPropertiesImpl"
+		factory-method="newInstanceFromResourceLocator">
+		<constructor-arg type="com.atlassian.crowd.service.client.ResourceLocator"
+			ref="resourceLocator" />
+	</bean>-->
+	
+	<bean id="clientProperties" class="com.zaizi.alfresco.crowd.AlfrescoClientProperties">
+		<property name="alfrescoGlobalProperties">
+		 <ref bean="global-properties"/>
+		 </property>
+	</bean>
+
+	<bean id="crowdClientFactory"
+		class="com.atlassian.crowd.integration.rest.service.factory.RestCrowdClientFactory" />
+
+	<bean id="crowdClient" factory-bean="crowdClientFactory"
+		factory-method="newInstance">
+		<constructor-arg ref="clientProperties" />
+	</bean>
+
+	<bean id="validationFactorExtractor"
+		class="com.atlassian.crowd.integration.http.util.CrowdHttpValidationFactorExtractorImpl"
+		factory-method="getInstance" />
+
+	<bean id="tokenHelper"
+		class="com.atlassian.crowd.integration.http.util.CrowdHttpTokenHelperImpl"
+		factory-method="getInstance">
+		<constructor-arg ref="validationFactorExtractor" />
+	</bean>
+
+	<bean id="crowdHttpAuthenticator"
+		class="com.atlassian.crowd.integration.http.CrowdHttpAuthenticatorImpl">
+		<constructor-arg ref="crowdClient" />
+		<constructor-arg ref="clientProperties" />
+		<constructor-arg ref="tokenHelper" />
+	</bean>
+
+	<bean id="crowdSecurityFilter"
+		class="com.atlassian.crowd.integration.http.filter.CrowdSecurityFilter">
+		<constructor-arg ref="crowdHttpAuthenticator" />
+		<constructor-arg ref="clientProperties" />
+	</bean>
+
+</beans>

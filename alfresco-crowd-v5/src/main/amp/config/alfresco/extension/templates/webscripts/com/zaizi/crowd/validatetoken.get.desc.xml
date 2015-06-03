@@ -1,0 +1,8 @@
+<!-- Crowd validation token WebScript definition -->
+<webscript>
+  <shortname>Crowd Token Validation</shortname>
+  <description>Validates a Crowd token</description>
+  <url>/crowd/validateToken?token={token}</url>
+  <format default="json">argument</format>
+  <authentication>none</authentication>
+</webscript>

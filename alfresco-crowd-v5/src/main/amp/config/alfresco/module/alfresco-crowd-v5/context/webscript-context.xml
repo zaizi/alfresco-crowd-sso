@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE beans PUBLIC '-//SPRING//DTD BEAN//EN' 'http://www.springframework.org/dtd/spring-beans.dtd'>
+<!--
+	Copyright 2015 Zaizi Limited.
+
+	Licensed under the Apache License, Version 2.0 (the 'License');
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	   http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an 'AS IS' BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+	
+-->
+<beans>
+	
+	<!-- Load Crowd beans -->    
+    <import resource="classpath:alfresco/module/${artifactId}/context/crowd-context.xml" />
+    
+    <!-- Validate crowd token WebScript -->
+    <bean id="webscript.com.zaizi.crowd.validatetoken.get" parent="webscript" class="com.zaizi.alfresco.crowd.webscript.CrowdValidationTokenWebScript">
+    	<property name="authenticationService" ref="authenticationService"></property>
+    	<property name="authenticationComponent" ref="authenticationComponent"></property>
+    	
+    	<property name="crowdClient">
+			<ref bean="crowdClient" />
+		</property>
+    </bean>
+    
+    <!-- Get crowd token WebScript -->
+    <bean id="webscript.com.zaizi.crowd.gettoken.get" parent="webscript" class="com.zaizi.alfresco.crowd.webscript.CrowdGetUserTokenWebScript">
+    	<property name="authenticationService" ref="authenticationService"></property>
+    	
+    	<property name="crowdClient">
+			<ref bean="crowdClient" />
+		</property>
+		<property name="clientProperties">
+			<ref bean="clientProperties" />
+		</property>
+		<property name="xffAddr">
+			<value>${crowd.xff.address}</value>
+		</property>
+    </bean>
+    
+</beans>
