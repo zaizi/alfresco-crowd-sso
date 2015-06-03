@@ -1,0 +1,8 @@
+<!-- Crowd token obtention WebScript definition -->
+<webscript>
+  <shortname>Crowd Token Obtention</shortname>
+  <description>Validates </description>
+  <url>/crowd/getToken</url>
+  <format default="json">argument</format>
+  <authentication>user</authentication>
+</webscript>
